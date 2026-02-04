@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "270287139745",
+    "project_id": "lmslegend-87688",
+    "storage_bucket": "lmslegend-87688.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270287139745:android:dff148edd57d55c2e391e0",
+        "android_client_info": {
+          "package_name": "com.example.lsm_legends"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_gAZ6IfUnmhzD6XIlJ1476Hk85B3JfrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

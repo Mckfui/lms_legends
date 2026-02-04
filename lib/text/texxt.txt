@@ -1,0 +1,27 @@
+Understood! I'm ready when you are for more.
+
+Since the web conversion is complete for now, what would you like to focus on next?
+
+Based on the project structure, we could:
+
+# LMS Enhancement Task List
+
+## 1. Data Integration (Firestore)
+- [ ] Create Firestore collections for `courses`, `lessons`, and `enrollments`
+- [ ] Refactor `CourseController` to fetch data from Firestore
+- [ ] Refactor `HomeController` to show real course data
+
+## 2. Enhanced Video Playback
+- [ ] Implement speed control (0.5x to 2.0x) in `LearningScreen`
+- [ ] Add "Theater Mode" toggle for wide-screen viewing
+- [ ] Implement Auto-Next lesson functionality
+
+## 3. Advanced Search & Filtering
+- [ ] Create search delegate or custom search bar in `HomeScreen`
+- [ ] Implement category-based filtering
+- [ ] Add rating and price filters
+
+## 4. User Profile & Settings
+- [ ] Build `ProfileScreen` with user data editing
+- [ ] Implement `SettingsScreen` (Dark mode toggle, Notifications)
+- [ ] Link screens to the Web Sidebar
