@@ -33,16 +33,27 @@ class AuthServices {
               .collection('users')
               .doc(credential.user!.uid)
               .set(newUser.toJson())
-              .timeout(const Duration(seconds: 15));
+              .timeout(
+                const Duration(seconds: 10),
+              ); // Reduced timeout for better UX
         } catch (firestoreError) {
+          // If Firestore times out or fails (e.g. due to rules, network, or persistence issues),
+          // we still want the registration to succeed because the Auth user was created.
           print(
-            'Firestore Save Error (Unavailable): $firestoreError. Proceeding with local data.',
+            'Firestore Save Warning: $firestoreError. Proceeding with Auth creation only.',
           );
         }
 
+        // Send Verification Email
+        try {
+          await credential.user!.sendEmailVerification();
+        } catch (e) {
+          print('Error sending verification email: $e');
+        }
+
         // 4. Save to SharedPreferences for local persistence
-        final pref = await SharedPreferences.getInstance();
-        pref.setString('user', jsonEncode(newUser.toJson()));
+        // final pref = await SharedPreferences.getInstance();
+        // pref.setString('user', jsonEncode(newUser.toJson())); // Do not auto-login
 
         return newUser;
       }
@@ -62,6 +73,12 @@ class AuthServices {
       );
 
       if (credential.user != null) {
+        if (!credential.user!.emailVerified) {
+          throw FirebaseAuthException(
+            code: 'email-unverified',
+            message: 'Please verify your email address to continue.',
+          );
+        }
         try {
           // 2. Fetch user details from Firestore
           final uid = credential.user!.uid;
@@ -145,5 +162,25 @@ class AuthServices {
     final pref = await SharedPreferences.getInstance();
     pref.setString('user', jsonEncode(fallbackUser.toJson()));
     return fallbackUser;
+  }
+
+  static Future<void> sendEmailVerification() async {
+    try {
+      if (_auth.currentUser != null && !_auth.currentUser!.emailVerified) {
+        await _auth.currentUser!.sendEmailVerification();
+      }
+    } catch (e) {
+      print('Firebase sendEmailVerification Exception: $e');
+      rethrow;
+    }
+  }
+
+  static Future<void> resetPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print('Firebase resetPassword Exception: $e');
+      rethrow;
+    }
   }
 }

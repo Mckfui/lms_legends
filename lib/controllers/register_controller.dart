@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lsm_legends/controllers/auth_controller.dart';
 import 'package:lsm_legends/core/services/auth_services.dart';
 import 'package:lsm_legends/models/user_model.dart';
 
@@ -42,19 +41,17 @@ class RegisterController extends GetxController {
     update();
 
     if (registeredUser != null) {
-      // Update global auth state
-      Get.find<AuthController>().currentUser.value = registeredUser;
-
       Get.dialog(
         CustomAlert(
           title: 'Congratulations',
-          description: 'You have completed your registration!',
-          buttonText: 'Sounds Good!',
+          description:
+              'Registration successful! Please check your email and click the link to verify your account.',
+          buttonText: 'Got It!',
           image: AnimationManager.success,
           isAnimated: true,
           onButtonTap: () {
             Get.back(); // Close dialog
-            // The root Obx in main.dart will automatically switch to the dashboard
+            Get.offAllNamed('/login'); // Force redirect to login screen
           },
         ),
         barrierDismissible: false,

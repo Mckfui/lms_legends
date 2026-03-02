@@ -161,7 +161,10 @@ class LoginScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextFormat.small(text: 'Forget password?', opacity: 0.5),
+              InkWell(
+                onTap: () => Get.toNamed(RouteNames.forgotPassword),
+                child: TextFormat.small(text: 'Forget password?', opacity: 0.5),
+              ),
             ],
           ),
           const SizedBox(height: 25),

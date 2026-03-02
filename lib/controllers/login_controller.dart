@@ -28,22 +28,62 @@ class LoginController extends GetxController {
   void login() async {
     if (globalKey.currentState!.validate()) {
       isLoading.value = true;
-      final UserModel? loggedInUser = await AuthServices.login(user: user);
-      isLoading.value = false;
-      update();
-      if (loggedInUser != null) {
-        Get.find<AuthController>().currentUser.value = loggedInUser;
-      } else {
-        Get.dialog(
-          const CustomAlert(
-            title: 'Error!',
-            description: 'Login failed! Please check your credentials.',
-            buttonText: 'Try Again',
-            image: AnimationManager.error,
-            isAnimated: true,
-          ),
-          barrierDismissible: true,
-        );
+      try {
+        final UserModel? loggedInUser = await AuthServices.login(user: user);
+        isLoading.value = false;
+        update();
+        if (loggedInUser != null) {
+          Get.find<AuthController>().currentUser.value = loggedInUser;
+        } else {
+          Get.dialog(
+            const CustomAlert(
+              title: 'Error!',
+              description: 'Login failed! Please check your credentials.',
+              buttonText: 'Try Again',
+              image: AnimationManager.error,
+              isAnimated: true,
+            ),
+            barrierDismissible: true,
+          );
+        }
+      } catch (e) {
+        isLoading.value = false;
+        update();
+
+        if (e.toString().contains('email-unverified')) {
+          Get.dialog(
+            CustomAlert(
+              title: 'Email Not Verified',
+              description:
+                  'Please verify your email address to continue. Check your inbox for the verification link.',
+              buttonText: 'Resend Email',
+              image: AnimationManager
+                  .error, // Assuming warning animation isn't available
+              isAnimated: true,
+              onButtonTap: () async {
+                Get.back();
+                try {
+                  await AuthServices.sendEmailVerification();
+                  Get.snackbar('Success', 'Verification email sent!');
+                } catch (e) {
+                  Get.snackbar('Error', 'Failed to resend email.');
+                }
+              },
+            ),
+            barrierDismissible: true,
+          );
+        } else {
+          Get.dialog(
+            const CustomAlert(
+              title: 'Error!',
+              description: 'Login failed! Please check your credentials.',
+              buttonText: 'Try Again',
+              image: AnimationManager.error,
+              isAnimated: true,
+            ),
+            barrierDismissible: true,
+          );
+        }
       }
     }
   }

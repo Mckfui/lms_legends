@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lsm_legends/bindings/all_bindings.dart';
@@ -16,14 +17,21 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Firestore Connectivity Fixes
-  // Global persistence reset (fixes local file/cache locks on Windows & Web)
-  FirebaseFirestore.instance.settings = const Settings(
-    persistenceEnabled: false,
-    sslEnabled: true,
-  );
-
-  // Forcefully enable network in case the SDK is stuck in offline mode
-  await FirebaseFirestore.instance.enableNetwork();
+  if (kIsWeb) {
+    // Web requires specific configuration
+    FirebaseFirestore.instance.settings = const Settings(
+      persistenceEnabled:
+          true, // Web often works better with this enabled or default
+    );
+  } else {
+    // Global persistence reset (fixes local file/cache locks on Windows & Mobile)
+    FirebaseFirestore.instance.settings = const Settings(
+      persistenceEnabled: false,
+      sslEnabled: true,
+    );
+    // Forcefully enable network in case the SDK is stuck in offline mode (Only safe on non-web)
+    await FirebaseFirestore.instance.enableNetwork();
+  }
 
   final authController = Get.put(AuthController());
   await authController.loadUser(); // ✅ allowed now

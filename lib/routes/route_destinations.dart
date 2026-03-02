@@ -10,6 +10,7 @@ import 'package:lsm_legends/views/ProfileScreen/profile_screen.dart';
 import 'package:lsm_legends/views/SettingsScreen/settings_screen.dart';
 import 'package:lsm_legends/views/SplashScreen/splash_screen.dart';
 
+import 'package:lsm_legends/views/Authentication/ForgotPasswordScreen/forgot_password_screen.dart';
 import '../views/LearningScreen/learning_screen.dart';
 
 class Routes {
@@ -18,6 +19,10 @@ class Routes {
     GetPage(name: RouteNames.getStarted, page: () => const GetStartedScreen()),
     GetPage(name: RouteNames.login, page: () => const LoginScreen()),
     GetPage(name: RouteNames.register, page: () => const RegisterScreen()),
+    GetPage(
+      name: RouteNames.forgotPassword,
+      page: () => const ForgotPasswordScreen(),
+    ),
     GetPage(name: RouteNames.home, page: () => const BottomBarView()),
     GetPage(name: RouteNames.courseLearn, page: () => const LearningScreen()),
     GetPage(name: RouteNames.lesson, page: () => const LessonScreen()),

@@ -61,14 +61,14 @@ class WebAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildProfileDropdown() {
-    return Row(
+    return const Row(
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 18,
           backgroundColor: WebColors.primary,
           child: Icon(Icons.person, color: Colors.white, size: 20),
         ),
-        const Icon(Icons.arrow_drop_down, color: Color(0xFF64748B)),
+        Icon(Icons.arrow_drop_down, color: Color(0xFF64748B)),
       ],
     );
   }

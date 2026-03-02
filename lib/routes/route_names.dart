@@ -10,4 +10,5 @@ class RouteNames {
   static const String bookmarkPlayer = '/bookmark-player';
   static const String profile = '/profile';
   static const String settings = '/settings';
+  static const String forgotPassword = '/forgot-password';
 }
